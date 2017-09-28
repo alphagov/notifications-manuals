@@ -1,0 +1,9 @@
+site_name: GOV.UK Notify Manuals
+pages:
+    - Home: index.md
+    - Overview: arch_overview.md
+    - Security: security.md
+theme_dir: ./readthedocs
+site_dir: ../docs
+future: true
+timezone: UTC

@@ -1,0 +1,74 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "GOV.UK Notify Manuals\n\n\nWhy do we need this manual, who are our intended users? Users/ Technical implementation\n\n\nSecurity\n\n\nCommon security mechanisms i.e. SMS protection\nWhitelisting etc\n\n\nOther technical documents\n\n\nlink to other python documentations", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#govuk-notify-manuals", 
+            "text": "Why do we need this manual, who are our intended users? Users/ Technical implementation", 
+            "title": "GOV.UK Notify Manuals"
+        }, 
+        {
+            "location": "/#security", 
+            "text": "Common security mechanisms i.e. SMS protection\nWhitelisting etc", 
+            "title": "Security"
+        }, 
+        {
+            "location": "/#other-technical-documents", 
+            "text": "link to other python documentations", 
+            "title": "Other technical documents"
+        }, 
+        {
+            "location": "/arch_overview/", 
+            "text": "GOV.UK Notify Manuals\n\n\nWhy do we need this manual, who are our intended users? Users/ Technical implementation\n\n\nSystem Overview\n\n\nWhat does the system do?\nBackground\n\n\nSystem Boundaries\n\n\nWhat does the application interact with\nWhat other systems interact with it\n\n\nSub-systems\n\n\nI.e. API, Admin, Clients, AWS, Email Autoscaling etc\n\n\nDataflow / Sequence\n\n\nUse cases with flow through the system for common paths i.e. one for csv one for client etc\nMaybe for common sub-systems i.e. how does auto scaling and monitoring work\n\n\nSecurity\n\n\nCommon security mechanisms i.e. SMS protection\nWhitelisting etc\n\n\nOther technical documents\n\n\nlink to other python documentations", 
+            "title": "Overview"
+        }, 
+        {
+            "location": "/arch_overview/#govuk-notify-manuals", 
+            "text": "Why do we need this manual, who are our intended users? Users/ Technical implementation", 
+            "title": "GOV.UK Notify Manuals"
+        }, 
+        {
+            "location": "/arch_overview/#system-overview", 
+            "text": "What does the system do?\nBackground", 
+            "title": "System Overview"
+        }, 
+        {
+            "location": "/arch_overview/#system-boundaries", 
+            "text": "What does the application interact with\nWhat other systems interact with it", 
+            "title": "System Boundaries"
+        }, 
+        {
+            "location": "/arch_overview/#sub-systems", 
+            "text": "I.e. API, Admin, Clients, AWS, Email Autoscaling etc", 
+            "title": "Sub-systems"
+        }, 
+        {
+            "location": "/arch_overview/#dataflow-sequence", 
+            "text": "Use cases with flow through the system for common paths i.e. one for csv one for client etc\nMaybe for common sub-systems i.e. how does auto scaling and monitoring work", 
+            "title": "Dataflow / Sequence"
+        }, 
+        {
+            "location": "/arch_overview/#security", 
+            "text": "Common security mechanisms i.e. SMS protection\nWhitelisting etc", 
+            "title": "Security"
+        }, 
+        {
+            "location": "/arch_overview/#other-technical-documents", 
+            "text": "link to other python documentations", 
+            "title": "Other technical documents"
+        }, 
+        {
+            "location": "/security/", 
+            "text": "Security", 
+            "title": "Security"
+        }, 
+        {
+            "location": "/security/#security", 
+            "text": "", 
+            "title": "Security"
+        }
+    ]
+}
