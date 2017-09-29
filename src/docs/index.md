@@ -25,3 +25,5 @@ This is primarily for the benefit of team members, rather than users of the plat
 * [macDown](https://macdown.uranusjr.com/) - Markdown editor ```brew cask install markdown```
 
 
+![alt text][logo]
+[logo]:https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 2"

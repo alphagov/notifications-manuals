@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Overview - GOV.UK Notify Manuals</title>
+  <title>System Overview - GOV.UK Notify Manuals</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Overview";
-    var mkdocs_page_input_path = "arch_overview.md";
-    var mkdocs_page_url = "/arch_overview/";
+    var mkdocs_page_name = "System Overview";
+    var mkdocs_page_input_path = "systems.md";
+    var mkdocs_page_url = "/systems/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -54,24 +54,18 @@
           
             <li class="toctree-l1 current">
 		
-    <a class="current" href="./">Overview</a>
+    <a class="current" href="./">System Overview</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#govuk-notify-manuals">GOV.UK Notify Manuals</a></li>
+    <li class="toctree-l2"><a href="#govuk-notify-systems-overview">GOV.UK Notify Systems Overview</a></li>
     
         <ul>
         
-            <li><a class="toctree-l3" href="#system-overview">System Overview</a></li>
+            <li><a class="toctree-l3" href="#system-contextboundary">System Context/Boundary</a></li>
         
-            <li><a class="toctree-l3" href="#system-boundaries">System Boundaries</a></li>
+            <li><a class="toctree-l3" href="#left-inbound-interactions">Left/ Inbound interactions</a></li>
         
-            <li><a class="toctree-l3" href="#sub-systems">Sub-systems</a></li>
-        
-            <li><a class="toctree-l3" href="#dataflow-sequence">Dataflow / Sequence</a></li>
-        
-            <li><a class="toctree-l3" href="#security">Security</a></li>
-        
-            <li><a class="toctree-l3" href="#other-technical-documents">Other technical documents</a></li>
+            <li><a class="toctree-l3" href="#rightoutbound-interactions">Right/Outbound Interactions</a></li>
         
         </ul>
     
@@ -106,7 +100,7 @@
     
       
     
-    <li>Overview</li>
+    <li>System Overview</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -116,25 +110,22 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="govuk-notify-manuals">GOV.UK Notify Manuals</h1>
-<p>Why do we need this manual, who are our intended users? Users/ Technical implementation</p>
-<h3 id="system-overview">System Overview</h3>
-<p>What does the system do?
-Background</p>
-<h3 id="system-boundaries">System Boundaries</h3>
-<p>What does the application interact with
-What other systems interact with it</p>
-<h3 id="sub-systems">Sub-systems</h3>
-<p>I.e. API, Admin, Clients, AWS, Email Autoscaling etc</p>
-<h3 id="dataflow-sequence">Dataflow / Sequence</h3>
-<p>Use cases with flow through the system for common paths i.e. one for csv one for client etc
-Maybe for common sub-systems i.e. how does auto scaling and monitoring work</p>
-<h3 id="security">Security</h3>
-<p>Common security mechanisms i.e. SMS protection
-Whitelisting etc</p>
-<h3 id="other-technical-documents">Other technical documents</h3>
-<pre><code>link to other python documentations
-</code></pre>
+                <h1 id="govuk-notify-systems-overview">GOV.UK Notify Systems Overview</h1>
+<h3 id="system-contextboundary">System Context/Boundary</h3>
+<p><img alt="Boundry" src="https://drive.google.com/uc?id=0B4iP55OVXryoSDZnVlIwdlJxWU0" /></p>
+<p>Notify provides a service for Government Departments to send notifications to their end users. Hence, our 'users' are usually the Government departments rather than the end users. We provide 3 type of services: email, text messaging and letters (available soon).  </p>
+<p>This system context/boundary diagram shows where external users and systems interact with Notify's backend systems. The interaction points are as follow:</p>
+<h3 id="left-inbound-interactions">Left/ Inbound interactions</h3>
+<ul>
+<li>Users use Notify's <strong>admin</strong> console webpages, which interacts with Notify backend systems via REST-API. The admin console can be used to upload (and scheduled) csv jobs, send test notifications, view outbound and inbound sms messages sent, change settings and view billing and status information. </li>
+<li>Users can programmatically interacts with our system via REST-API for uploading jobs for all <strong>email</strong>, <strong>sms</strong> and <strong>letter</strong> services. </li>
+</ul>
+<h3 id="rightoutbound-interactions">Right/Outbound Interactions</h3>
+<ul>
+<li>Notify interacts bi-directionaly with our SMS providers via REST-API. The SMS providers provide <strong>text messages</strong> services for our users to send messages to their end users. We provide <strong>inbound sms</strong> service for our end-users to reply messages. </li>
+<li>Notify interacts with our <strong>email</strong> service provider via AWS SES and SNS. The status of emails are sent back to our system via REST API</li>
+<li>Notify interacts with our AWS FTP server via boto3 and REST API, which allows DVLA (our letter service provider) to send and receive documents using ftp, for <strong>letter services</strong>. DVLA currently handles the posting of the letters. </li>
+</ul>
               
             </div>
           </div>
