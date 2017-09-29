@@ -26,44 +26,29 @@
             "title": "Useful Tools"
         }, 
         {
-            "location": "/arch_overview/", 
-            "text": "GOV.UK Notify Manuals\n\n\nWhy do we need this manual, who are our intended users? Users/ Technical implementation\n\n\nSystem Overview\n\n\nWhat does the system do?\nBackground\n\n\nSystem Boundaries\n\n\nWhat does the application interact with\nWhat other systems interact with it\n\n\nSub-systems\n\n\nI.e. API, Admin, Clients, AWS, Email Autoscaling etc\n\n\nDataflow / Sequence\n\n\nUse cases with flow through the system for common paths i.e. one for csv one for client etc\nMaybe for common sub-systems i.e. how does auto scaling and monitoring work\n\n\nSecurity\n\n\nCommon security mechanisms i.e. SMS protection\nWhitelisting etc\n\n\nOther technical documents\n\n\nlink to other python documentations", 
-            "title": "Overview"
-        }, 
-        {
-            "location": "/arch_overview/#govuk-notify-manuals", 
-            "text": "Why do we need this manual, who are our intended users? Users/ Technical implementation", 
-            "title": "GOV.UK Notify Manuals"
-        }, 
-        {
-            "location": "/arch_overview/#system-overview", 
-            "text": "What does the system do?\nBackground", 
+            "location": "/systems/", 
+            "text": "GOV.UK Notify Systems Overview\n\n\nSystem Context/Boundary\n\n\n\n\nNotify provides a service for Government Departments to send notifications to their end users. Hence, our 'users' are usually the Government departments rather than the end users. We provide 3 type of services: email, text messaging and letters (available soon).  \n\n\nThis system context/boundary diagram shows where external users and systems interact with Notify's backend systems. The interaction points are as follow:\n\n\nLeft/ Inbound interactions\n\n\n\n\nUsers use Notify's \nadmin\n console webpages, which interacts with Notify backend systems via REST-API. The admin console can be used to upload (and scheduled) csv jobs, send test notifications, view outbound and inbound sms messages sent, change settings and view billing and status information. \n\n\nUsers can programmatically interacts with our system via REST-API for uploading jobs for all \nemail\n, \nsms\n and \nletter\n services. \n\n\n\n\nRight/Outbound Interactions\n\n\n\n\nNotify interacts bi-directionaly with our SMS providers via REST-API. The SMS providers provide \ntext messages\n services for our users to send messages to their end users. We provide \ninbound sms\n service for our end-users to reply messages. \n\n\nNotify interacts with our \nemail\n service provider via AWS SES and SNS. The status of emails are sent back to our system via REST API\n\n\nNotify interacts with our AWS FTP server via boto3 and REST API, which allows DVLA (our letter service provider) to send and receive documents using ftp, for \nletter services\n. DVLA currently handles the posting of the letters.", 
             "title": "System Overview"
         }, 
         {
-            "location": "/arch_overview/#system-boundaries", 
-            "text": "What does the application interact with\nWhat other systems interact with it", 
-            "title": "System Boundaries"
+            "location": "/systems/#govuk-notify-systems-overview", 
+            "text": "", 
+            "title": "GOV.UK Notify Systems Overview"
         }, 
         {
-            "location": "/arch_overview/#sub-systems", 
-            "text": "I.e. API, Admin, Clients, AWS, Email Autoscaling etc", 
-            "title": "Sub-systems"
+            "location": "/systems/#system-contextboundary", 
+            "text": "Notify provides a service for Government Departments to send notifications to their end users. Hence, our 'users' are usually the Government departments rather than the end users. We provide 3 type of services: email, text messaging and letters (available soon).    This system context/boundary diagram shows where external users and systems interact with Notify's backend systems. The interaction points are as follow:", 
+            "title": "System Context/Boundary"
         }, 
         {
-            "location": "/arch_overview/#dataflow-sequence", 
-            "text": "Use cases with flow through the system for common paths i.e. one for csv one for client etc\nMaybe for common sub-systems i.e. how does auto scaling and monitoring work", 
-            "title": "Dataflow / Sequence"
+            "location": "/systems/#left-inbound-interactions", 
+            "text": "Users use Notify's  admin  console webpages, which interacts with Notify backend systems via REST-API. The admin console can be used to upload (and scheduled) csv jobs, send test notifications, view outbound and inbound sms messages sent, change settings and view billing and status information.   Users can programmatically interacts with our system via REST-API for uploading jobs for all  email ,  sms  and  letter  services.", 
+            "title": "Left/ Inbound interactions"
         }, 
         {
-            "location": "/arch_overview/#security", 
-            "text": "Common security mechanisms i.e. SMS protection\nWhitelisting etc", 
-            "title": "Security"
-        }, 
-        {
-            "location": "/arch_overview/#other-technical-documents", 
-            "text": "link to other python documentations", 
-            "title": "Other technical documents"
+            "location": "/systems/#rightoutbound-interactions", 
+            "text": "Notify interacts bi-directionaly with our SMS providers via REST-API. The SMS providers provide  text messages  services for our users to send messages to their end users. We provide  inbound sms  service for our end-users to reply messages.   Notify interacts with our  email  service provider via AWS SES and SNS. The status of emails are sent back to our system via REST API  Notify interacts with our AWS FTP server via boto3 and REST API, which allows DVLA (our letter service provider) to send and receive documents using ftp, for  letter services . DVLA currently handles the posting of the letters.", 
+            "title": "Right/Outbound Interactions"
         }, 
         {
             "location": "/security/", 
