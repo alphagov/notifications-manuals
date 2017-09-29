@@ -20,5 +20,6 @@ cd into the src directory, run ```mkdocs build``` to build the website
 
 You can run ```mkdocs serve``` to test the built webpage on your local machine
 
-
+### Refreshing
+github.io webpage may take a little while to be refreshed. However, make sure you have used `mkdocs build` to build the webpage before pushing to github
 

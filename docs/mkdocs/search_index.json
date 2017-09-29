@@ -2,23 +2,28 @@
     "docs": [
         {
             "location": "/", 
-            "text": "GOV.UK Notify Manuals\n\n\nWhy do we need this manual, who are our intended users? Users/ Technical implementation\n\n\nSecurity\n\n\nCommon security mechanisms i.e. SMS protection\nWhitelisting etc\n\n\nOther technical documents\n\n\nlink to other python documentations", 
+            "text": "GOV.UK Notify Team Manuals\n\n\nThis is primarily for the benefit of team members, rather than users of the platform.\n\n\nProject\n: GOV.UK Notify\n\n\nProject website\n: https://www.notifications.service.gov.uk/\n\n\nEveryday Links\n\n\n\n\nTrello boards\n\n\nPivotal Storyboard\n\n\nNotify Preview\n\n\nNotify Staging\n\n\nNotify Live\n\n\nJenkins\n\n\nLogit - natvigated from your gmail account toolbar\n\n\n\n\nOther technical documents\n\n\nlinks to other python/api/user documentations\n\n\n\nUseful Tools\n\n\n\n\nDbeaver\n - database visualisation tool\n\n\nmacDown\n - Markdown editor \nbrew cask install markdown", 
             "title": "Home"
         }, 
         {
-            "location": "/#govuk-notify-manuals", 
-            "text": "Why do we need this manual, who are our intended users? Users/ Technical implementation", 
-            "title": "GOV.UK Notify Manuals"
+            "location": "/#govuk-notify-team-manuals", 
+            "text": "This is primarily for the benefit of team members, rather than users of the platform.  Project : GOV.UK Notify  Project website : https://www.notifications.service.gov.uk/", 
+            "title": "GOV.UK Notify Team Manuals"
         }, 
         {
-            "location": "/#security", 
-            "text": "Common security mechanisms i.e. SMS protection\nWhitelisting etc", 
-            "title": "Security"
+            "location": "/#everyday-links", 
+            "text": "Trello boards  Pivotal Storyboard  Notify Preview  Notify Staging  Notify Live  Jenkins  Logit - natvigated from your gmail account toolbar", 
+            "title": "Everyday Links"
         }, 
         {
             "location": "/#other-technical-documents", 
-            "text": "link to other python documentations", 
+            "text": "links to other python/api/user documentations", 
             "title": "Other technical documents"
+        }, 
+        {
+            "location": "/#useful-tools", 
+            "text": "Dbeaver  - database visualisation tool  macDown  - Markdown editor  brew cask install markdown", 
+            "title": "Useful Tools"
         }, 
         {
             "location": "/arch_overview/", 
