@@ -10,11 +10,11 @@ This system context/boundary diagram shows where external users and systems inte
 
 ### Left-hand side/ Inbound interactions
 * Users use Notify's **admin** console webpages, which interacts with Notify backend systems via REST-API. The admin console can be used to 
- * upload and/or schedule csv jobs
- * send test notifications
- * view outbound and inbound sms messages sent
- * change settings 
- * view billing and status information. 
+    - upload and/or schedule csv jobs
+    - send test notifications
+    - view outbound and inbound sms messages sent
+    - change settings 
+    - view billing and status information. 
 * Users can programmatically interacts with our system via REST-API for uploading jobs for all **email**, **sms** and **letter** services. 
 
 ### Right-hand side/ Outbound Interactions
