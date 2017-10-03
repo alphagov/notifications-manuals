@@ -63,9 +63,9 @@
         
             <li><a class="toctree-l3" href="#system-contextboundary">System Context/Boundary</a></li>
         
-            <li><a class="toctree-l3" href="#left-inbound-interactions">Left/ Inbound interactions</a></li>
+            <li><a class="toctree-l3" href="#left-hand-side-inbound-interactions">Left-hand side/ Inbound interactions</a></li>
         
-            <li><a class="toctree-l3" href="#rightoutbound-interactions">Right/Outbound Interactions</a></li>
+            <li><a class="toctree-l3" href="#right-hand-side-outbound-interactions">Right-hand side/ Outbound Interactions</a></li>
         
         </ul>
     
@@ -114,13 +114,20 @@
 <h3 id="system-contextboundary">System Context/Boundary</h3>
 <p><img alt="Boundry" src="https://drive.google.com/uc?id=0B4iP55OVXryoSDZnVlIwdlJxWU0" /></p>
 <p>Notify provides a service for Government Departments to send notifications to their end users. Hence, our 'users' are usually the Government departments rather than the end users. We provide 3 type of services: email, text messaging and letters (available soon).  </p>
-<p>This system context/boundary diagram shows where external users and systems interact with Notify's backend systems. The interaction points are as follow:</p>
-<h3 id="left-inbound-interactions">Left/ Inbound interactions</h3>
+<p>This system context/boundary diagram shows where external users and systems interact with Notify's backend systems. The interaction points are as follows:</p>
+<h3 id="left-hand-side-inbound-interactions">Left-hand side/ Inbound interactions</h3>
 <ul>
-<li>Users use Notify's <strong>admin</strong> console webpages, which interacts with Notify backend systems via REST-API. The admin console can be used to upload (and scheduled) csv jobs, send test notifications, view outbound and inbound sms messages sent, change settings and view billing and status information. </li>
+<li>Users use Notify's <strong>admin</strong> console webpages, which interacts with Notify backend systems via REST-API. The admin console can be used to </li>
+<li>upload and/or schedule csv jobs</li>
+<li>send test notifications</li>
+<li>view outbound and inbound sms messages sent</li>
+<li>change settings </li>
+<li>view billing and status information. </li>
 <li>Users can programmatically interacts with our system via REST-API for uploading jobs for all <strong>email</strong>, <strong>sms</strong> and <strong>letter</strong> services. </li>
 </ul>
-<h3 id="rightoutbound-interactions">Right/Outbound Interactions</h3>
+<h3 id="right-hand-side-outbound-interactions">Right-hand side/ Outbound Interactions</h3>
+<p>Notify provides a service for Government Departments to send notifications to their end users. Hence, our 'users' are usually the Government departments rather than the end users. We provide 3 type of services: email, text messaging and letters (available soon).
+This system context/boundary diagram shows where external users and systems interact with Notify's backend systems. The interaction points are as follow:</p>
 <ul>
 <li>Notify interacts bi-directionaly with our SMS providers via REST-API. The SMS providers provide <strong>text messages</strong> services for our users to send messages to their end users. We provide <strong>inbound sms</strong> service for our end-users to reply messages. </li>
 <li>Notify interacts with our <strong>email</strong> service provider via AWS SES and SNS. The status of emails are sent back to our system via REST API</li>
