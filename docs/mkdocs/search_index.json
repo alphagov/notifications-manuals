@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "GOV.UK Notify Team Manuals\n\n\nThis is primarily for the benefit of team members, rather than users of the platform.\n\n\nProject\n: GOV.UK Notify\n\n\nProject website\n: https://www.notifications.service.gov.uk/\n\n\nEveryday Links\n\n\n\n\nTrello boards\n\n\nPivotal Storyboard\n\n\nNotify Preview\n\n\nNotify Staging\n\n\nNotify Live\n\n\nJenkins\n\n\nLogit - natvigated from your gmail account toolbar\n\n\n\n\nOther technical documents\n\n\nlinks to other python/api/user documentations\n\n\n\nUseful Tools\n\n\n\n\nDbeaver\n - database visualisation tool\n\n\nmacDown\n - Markdown editor \nbrew cask install markdown", 
+            "text": "GOV.UK Notify Team Manuals\n\n\nThis is primarily for the benefit of team members, rather than users of the platform.\n\n\nProject\n: GOV.UK Notify\n\n\nProject website\n: https://www.notifications.service.gov.uk/\n\n\nOnboarding\n\n\n\n\nNotify-wiki\n\n\nDev getting start guide\n\n\n\n\nTeam Links\n\n\n\n\nPivotal Storyboard\n\n\nTech Debt Board\n\n\nJenkins tools\n\n\nNotify Preview\n\n\nNotify Staging\n\n\nNotify Live\n\n\nLogit.io Kibana Monitoring - natvigated from your gmail account-\ntoolbar\n\n\nHostedGraphite monitoring\n\n\n\n\nOther technical documents\n\n\n\n\nGoogle drive Notify Folder\n\n\n\n\nSome Tools\n\n\n\n\nDbeaver\n - database visualisation tool\n\n\nmacDown\n - Markdown editor \nbrew cask install markdown", 
             "title": "Home"
         }, 
         {
@@ -11,19 +11,24 @@
             "title": "GOV.UK Notify Team Manuals"
         }, 
         {
-            "location": "/#everyday-links", 
-            "text": "Trello boards  Pivotal Storyboard  Notify Preview  Notify Staging  Notify Live  Jenkins  Logit - natvigated from your gmail account toolbar", 
-            "title": "Everyday Links"
+            "location": "/#onboarding", 
+            "text": "Notify-wiki  Dev getting start guide", 
+            "title": "Onboarding"
+        }, 
+        {
+            "location": "/#team-links", 
+            "text": "Pivotal Storyboard  Tech Debt Board  Jenkins tools  Notify Preview  Notify Staging  Notify Live  Logit.io Kibana Monitoring - natvigated from your gmail account- toolbar  HostedGraphite monitoring", 
+            "title": "Team Links"
         }, 
         {
             "location": "/#other-technical-documents", 
-            "text": "links to other python/api/user documentations", 
+            "text": "Google drive Notify Folder", 
             "title": "Other technical documents"
         }, 
         {
-            "location": "/#useful-tools", 
+            "location": "/#some-tools", 
             "text": "Dbeaver  - database visualisation tool  macDown  - Markdown editor  brew cask install markdown", 
-            "title": "Useful Tools"
+            "title": "Some Tools"
         }, 
         {
             "location": "/systems/", 
@@ -62,12 +67,12 @@
         }, 
         {
             "location": "/incidents/", 
-            "text": "Incidents reports\n\n\n\n\n\n\n\n\nDate\n\n\nProblem (click for full report)\n\n\nSymptoms\n\n\n\n\n\n\n\n\n\n\n2017/10/05\n\n\nJenkins out of memory\n\n\nJenkins builts fail + run out of disk space error appears in full build log\n\n\n\n\n\n\n2017/07/25\n\n\nAWS internet connectivity outage\n\n\nPacket loss on the Internet\n\n\n\n\n\n\n2016/08/05\n\n\nDatabase mismatch\n\n\nService Downtime during a deploy", 
+            "text": "Incidents reports\n\n\n(Requires GDS Access for viewing the reports)\n\n\n\n\n\n\n\n\nDate\n\n\nProblem (click for full report)\n\n\nSymptoms\n\n\n\n\n\n\n\n\n\n\n2017/10/05\n\n\nJenkins out of memory\n\n\nJenkins builts fail + run out of disk space error appears in full build log\n\n\n\n\n\n\n2017/07/25\n\n\nAWS internet connectivity outage\n\n\nPacket loss on the Internet\n\n\n\n\n\n\n2016/08/05\n\n\nDatabase mismatch\n\n\nService Downtime during a deploy", 
             "title": "Incidents"
         }, 
         {
             "location": "/incidents/#incidents-reports", 
-            "text": "Date  Problem (click for full report)  Symptoms      2017/10/05  Jenkins out of memory  Jenkins builts fail + run out of disk space error appears in full build log    2017/07/25  AWS internet connectivity outage  Packet loss on the Internet    2016/08/05  Database mismatch  Service Downtime during a deploy", 
+            "text": "(Requires GDS Access for viewing the reports)     Date  Problem (click for full report)  Symptoms      2017/10/05  Jenkins out of memory  Jenkins builts fail + run out of disk space error appears in full build log    2017/07/25  AWS internet connectivity outage  Packet loss on the Internet    2016/08/05  Database mismatch  Service Downtime during a deploy", 
             "title": "Incidents reports"
         }
     ]
