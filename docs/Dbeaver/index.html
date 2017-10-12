@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Incidents - GOV.UK Notify Manuals</title>
+  <title>Dbeaver - GOV.UK Notify Manuals</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -17,9 +17,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Incidents";
-    var mkdocs_page_input_path = "incidents.md";
-    var mkdocs_page_url = "/incidents/";
+    var mkdocs_page_name = "Dbeaver";
+    var mkdocs_page_input_path = "Dbeaver.md";
+    var mkdocs_page_url = "/Dbeaver/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -62,20 +62,28 @@
     <a class="" href="../security/">Security</a>
 	    </li>
           
+            <li class="toctree-l1">
+		
+    <a class="" href="../incidents/">Incidents</a>
+	    </li>
+          
             <li class="toctree-l1 current">
 		
-    <a class="current" href="./">Incidents</a>
+    <a class="current" href="./">Dbeaver</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#incidents-reports">Incidents reports</a></li>
+    <li class="toctree-l2"><a href="#dbeaver">Dbeaver</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#local-database-connection">Local database connection</a></li>
+        
+            <li><a class="toctree-l3" href="#create-a-read-only-conneciton-to-database-on-server">Create a read-only conneciton to database on server</a></li>
+        
+        </ul>
     
 
     </ul>
-	    </li>
-          
-            <li class="toctree-l1">
-		
-    <a class="" href="../Dbeaver/">Dbeaver</a>
 	    </li>
           
         </ul>
@@ -100,7 +108,7 @@
     
       
     
-    <li>Incidents</li>
+    <li>Dbeaver</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -110,44 +118,24 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="incidents-reports">Incidents reports</h1>
-<p>(Requires GDS Access for viewing the reports)</p>
-<table>
-<thead>
-<tr>
-<th>Date</th>
-<th>Problem (click for full report)</th>
-<th>Symptoms</th>
-<th>Tag</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2017/10/09</td>
-<td><a href="https://docs.google.com/document/d/1RODY-7yLjq7YNA0BDoM-TbJni6hSP7odB7Ias3ShMOg/edit">2FA sms stops to send</a></td>
-<td>Error messages appear locally when running after a DB upgrade</td>
-<td>DB migratiaon</td>
-</tr>
-<tr>
-<td>2017/10/05</td>
-<td><a href="https://drive.google.com/open?id=1-m2vUsl3d-fdHoITQwqIc1SfjIJGBbM89aLNPRS2CY0">Jenkins out of memory</a></td>
-<td>Jenkins builts fail + run out of disk space error appears in full build log</td>
-<td>Jenkins</td>
-</tr>
-<tr>
-<td>2017/07/25</td>
-<td><a href="https://docs.google.com/a/digital.cabinet-office.gov.uk/document/d/1f_szyWLLojCoM8N_eM_c6mh8N4i6zEMBmJm3g9PLYio/edit?usp=sharing">AWS internet connectivity outage</a></td>
-<td>Packet loss on the Internet</td>
-<td>PaaS</td>
-</tr>
-<tr>
-<td>2016/08/05</td>
-<td><a href="https://docs.google.com/a/digital.cabinet-office.gov.uk/document/d/1Zee-bji9vsBemw3WDPj9gFMJTxLlkNEDs29GQbcPBfk/edit?usp=sharing">Database mismatch</a></td>
-<td>Service Downtime during a deploy</td>
-<td>DB</td>
-</tr>
-</tbody>
-</table>
+                <h1 id="dbeaver">Dbeaver</h1>
+<p>This document describes how to connect to the local database using Dbeaver, and create a read-only connection to the produciton database. </p>
+<h2 id="local-database-connection">Local database connection</h2>
+<ol>
+<li>Create a new connection. Use these configurations
+<img alt="local-config" src="https://drive.google.com/uc?id=0B4iP55OVXryoTVNkOVFNNDYwWjA" /></li>
+<li>The tables are visible under Schemas/public/Tables
+<img alt="local-config" src="https://drive.google.com/uc?id=0B4iP55OVXryoNklfNGptd1lKNUU" /></li>
+</ol>
+<h2 id="create-a-read-only-conneciton-to-database-on-server">Create a read-only conneciton to database on server</h2>
+<ol>
+<li>You need to establish a database connection from shell. Following the procedure in this documentation, you create an SSH tunnel to our server - <a href="https://docs.google.com/document/d/1544f9LjmuZzJIdoyChUtLAgnqOUwVJGbqOHiYmcuVqo/edit#heading=h.ix67pydt9x0s">PaaS Note</a></li>
+<li>From Dbeaver, make a new database connection</li>
+<li>Select postgres as connection type <img alt="Screenshot" src="https://docs.google.com/uc?id=0B4iP55OVXryoZlNMdmVtN1NzU28" /></li>
+<li>Enter the parameters and credentails for this connection. The port should be 15432 as the SSH tunnel you created in step 1. The database name and credentials can be found in Notify's credentail in /credentail/pass/postgres_logins.txt <img alt="Screenshot" src="https://docs.google.com/uc?id=0B4iP55OVXryoVFhtSGFJWm1JdW8" /></li>
+<li>Click Next</li>
+<li>Enter SSL information as this <img alt="Screenshot" src="https://docs.google.com/uc?id=0B4iP55OVXryoYmdCbDhmVEVUWlE" /></li>
+</ol>
               
             </div>
           </div>
@@ -155,10 +143,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../Dbeaver/" class="btn btn-neutral float-right" title="Dbeaver">Next <span class="icon icon-circle-arrow-right"></span></a>
       
-      
-        <a href="../security/" class="btn btn-neutral" title="Security"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../incidents/" class="btn btn-neutral" title="Incidents"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -184,10 +170,8 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../security/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../incidents/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
-      
-        <span style="margin-left: 15px"><a href="../Dbeaver/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

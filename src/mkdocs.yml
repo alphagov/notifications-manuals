@@ -4,6 +4,7 @@ pages:
     - System Overview: systems.md
     - Security: security.md
     - Incidents: incidents.md
+    - Dbeaver: Dbeaver.md
 
 theme_dir: ./readthedocs
 site_dir: ../docs

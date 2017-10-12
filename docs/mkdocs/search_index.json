@@ -67,13 +67,33 @@
         }, 
         {
             "location": "/incidents/", 
-            "text": "Incidents reports\n\n\n(Requires GDS Access for viewing the reports)\n\n\n\n\n\n\n\n\nDate\n\n\nProblem (click for full report)\n\n\nSymptoms\n\n\n\n\n\n\n\n\n\n\n2017/10/05\n\n\nJenkins out of memory\n\n\nJenkins builts fail + run out of disk space error appears in full build log\n\n\n\n\n\n\n2017/07/25\n\n\nAWS internet connectivity outage\n\n\nPacket loss on the Internet\n\n\n\n\n\n\n2016/08/05\n\n\nDatabase mismatch\n\n\nService Downtime during a deploy", 
+            "text": "Incidents reports\n\n\n(Requires GDS Access for viewing the reports)\n\n\n\n\n\n\n\n\nDate\n\n\nProblem (click for full report)\n\n\nSymptoms\n\n\nTag\n\n\n\n\n\n\n\n\n\n\n2017/10/09\n\n\n2FA sms stops to send\n\n\nError messages appear locally when running after a DB upgrade\n\n\nDB migratiaon\n\n\n\n\n\n\n2017/10/05\n\n\nJenkins out of memory\n\n\nJenkins builts fail + run out of disk space error appears in full build log\n\n\nJenkins\n\n\n\n\n\n\n2017/07/25\n\n\nAWS internet connectivity outage\n\n\nPacket loss on the Internet\n\n\nPaaS\n\n\n\n\n\n\n2016/08/05\n\n\nDatabase mismatch\n\n\nService Downtime during a deploy\n\n\nDB", 
             "title": "Incidents"
         }, 
         {
             "location": "/incidents/#incidents-reports", 
-            "text": "(Requires GDS Access for viewing the reports)     Date  Problem (click for full report)  Symptoms      2017/10/05  Jenkins out of memory  Jenkins builts fail + run out of disk space error appears in full build log    2017/07/25  AWS internet connectivity outage  Packet loss on the Internet    2016/08/05  Database mismatch  Service Downtime during a deploy", 
+            "text": "(Requires GDS Access for viewing the reports)     Date  Problem (click for full report)  Symptoms  Tag      2017/10/09  2FA sms stops to send  Error messages appear locally when running after a DB upgrade  DB migratiaon    2017/10/05  Jenkins out of memory  Jenkins builts fail + run out of disk space error appears in full build log  Jenkins    2017/07/25  AWS internet connectivity outage  Packet loss on the Internet  PaaS    2016/08/05  Database mismatch  Service Downtime during a deploy  DB", 
             "title": "Incidents reports"
+        }, 
+        {
+            "location": "/Dbeaver/", 
+            "text": "Dbeaver\n\n\nThis document describes how to connect to the local database using Dbeaver, and create a read-only connection to the produciton database. \n\n\nLocal database connection\n\n\n\n\nCreate a new connection. Use these configurations\n\n\n\nThe tables are visible under Schemas/public/Tables\n\n\n\n\n\nCreate a read-only conneciton to database on server\n\n\n\n\nYou need to establish a database connection from shell. Following the procedure in this documentation, you create an SSH tunnel to our server - \nPaaS Note\n\n\nFrom Dbeaver, make a new database connection\n\n\nSelect postgres as connection type \n\n\nEnter the parameters and credentails for this connection. The port should be 15432 as the SSH tunnel you created in step 1. The database name and credentials can be found in Notify's credentail in /credentail/pass/postgres_logins.txt \n\n\nClick Next\n\n\nEnter SSL information as this", 
+            "title": "Dbeaver"
+        }, 
+        {
+            "location": "/Dbeaver/#dbeaver", 
+            "text": "This document describes how to connect to the local database using Dbeaver, and create a read-only connection to the produciton database.", 
+            "title": "Dbeaver"
+        }, 
+        {
+            "location": "/Dbeaver/#local-database-connection", 
+            "text": "Create a new connection. Use these configurations  The tables are visible under Schemas/public/Tables", 
+            "title": "Local database connection"
+        }, 
+        {
+            "location": "/Dbeaver/#create-a-read-only-conneciton-to-database-on-server", 
+            "text": "You need to establish a database connection from shell. Following the procedure in this documentation, you create an SSH tunnel to our server -  PaaS Note  From Dbeaver, make a new database connection  Select postgres as connection type   Enter the parameters and credentails for this connection. The port should be 15432 as the SSH tunnel you created in step 1. The database name and credentials can be found in Notify's credentail in /credentail/pass/postgres_logins.txt   Click Next  Enter SSL information as this", 
+            "title": "Create a read-only conneciton to database on server"
         }
     ]
 }
