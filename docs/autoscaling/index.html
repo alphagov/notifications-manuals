@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Autoscaling - GOV.UK Notify Manuals</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Autoscaling";
+    var mkdocs_page_input_path = "autoscaling.md";
+    var mkdocs_page_url = "/autoscaling/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> GOV.UK Notify Manuals</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../systems/">System Overview</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../security/">Security</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../incidents/">Incidents</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../Dbeaver/">Dbeaver</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Autoscaling</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#govuk-notify-autoscaler">GOV.UK Notify AutoScaler</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#metrics">Metrics</a></li>
+        
+            <li><a class="toctree-l3" href="#scaling-instances">Scaling instances</a></li>
+        
+            <li><a class="toctree-l3" href="#the-scaling-function">The Scaling function</a></li>
+        
+            <li><a class="toctree-l3" href="#min-and-max-instance-counts">Min and max instance counts</a></li>
+        
+            <li><a class="toctree-l3" href="#non-scaled-apps">Non-scaled apps</a></li>
+        
+            <li><a class="toctree-l3" href="#source-code">Source Code</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">GOV.UK Notify Manuals</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Autoscaling</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="govuk-notify-autoscaler">GOV.UK Notify AutoScaler</h1>
+<p>Notify has bursty, periodic loads and traffic. During the night, the traffic stays low and most of the time, is consist of background scheduled testing jobs; and twe get more traffic during office hours. Once in a while, we would receive a task that is consisted of &gt;20k notifications. This has motivated us to develop an autoscaler to response to these tasks and scale up and down Notify apps instances running on PaaS. </p>
+<p>These terms used in this article refer to:</p>
+<ul>
+<li>a <strong>task</strong> is used to described when a user upload a csv file consist of a batch of notifications to be sent </li>
+<li>a <strong>job</strong> is a unit of notification, database query or a process to be run on the servers at a time</li>
+<li>a <strong>request</strong> describes an 'http request' to retrieve or process information.  </li>
+</ul>
+<h2 id="metrics">Metrics</h2>
+<p>Notify's auto scaling uses these metrics:</p>
+<ul>
+<li>
+<p><strong>RequestCounts (for Inbound-apps)</strong> <br>
+A metric returned by AWS Cloudwatch for the Elastic Load Balancers (ELB) to scale each of the ELB apps running on PaaS</p>
+</li>
+<li>
+<p><strong>ApproximateNumberOfMessages (for Delivery-apps)</strong> <br>
+A metric returned by AWS Cloudwatch for the SQS queues to scale each notification delivery and database apps on PaaS.</p>
+</li>
+<li>
+<p><strong>Number of scheduled notifications (for scheduled-jobs)</strong><br>
+A metric obtained from the database for csv files to be sent in the next 1 minutes, and is updated everytime when the autoscaler is scheduled run.</p>
+</li>
+</ul>
+<p>The autoscaler is scheduled to run every 20 seconds using the python <code>sched</code> module. Autoscaling applies to each individual apps. </p>
+<h2 id="scaling-instances">Scaling instances</h2>
+<p>A factor <code>desired_instances_count</code> is used to determine the desired number of instances to run for an App at an evaluated period. This factor is calculated differently for our three types of apps and is bounded by:</p>
+<p><code>min_instance_count&lt;=desired_instances_count&lt;=max_instance_count</code></p>
+<p>The definition of <code>min_instance_count</code> and <code>max_instance_count</code> can be found in the latter section. </p>
+<h3 id="delivery-workers">Delivery workers</h3>
+<p>The autoscaler checks the total number of messages in the queues (ApproximateNumberOfMessages) of the app and scaled accordingly. One app can use multiple queues. This scaling is applicable to database tasks, CSV job processor, notifications senders and various research and priority jobs. </p>
+<p>For example, 
+<code>notify-delivery-worker-sender</code> is an app for delivering the notifications to the service providers, i.e. AWS SES and text messaging providers. The celery worker consumes job from two queues: <code>send-sms-tasks</code> and <code>send-sms-tasks</code> are being monitored. The number of instances is then calculated as:-</p>
+<pre><code>desired_instances_count = total_message_count / request_per_instance
+</code></pre>
+
+<p>where <code>total_message_count</code> is the sum of all the queues of this app and <code>request_per_instance</code> is a predefined estimated number of jobs an app instance can handle at one time.</p>
+<h3 id="request-handlers">Request handlers</h3>
+<p>The inbound apps are scaled based on last 5 <code>request_counts</code>, where <code>request_counts</code> is the total number of incoming requests in one minute.  </p>
+<pre><code>desired_instance_count = max(request_counts)/request_per_instance
+</code></pre>
+
+<p><code>request_per_instance</code> is a pre-defined scaler that indicates the number of requests that can be handled by one instance of app. </p>
+<h3 id="scheduled-jobs">Scheduled jobs</h3>
+<p>Notify uses a proactive schedule for scheduled tasks. Scheduled tasks are CSV files the users uploaded to be run at a given time. We already have the information of job size (number of notificaitons) and the scheduled time. The proactive scheduler scales up the number of instances before the jobs start. This scaling applies to the same task as the Delivery workers above. </p>
+<p>The desired number of instances for the particular app is calculated as follow:</p>
+<pre><code>desired_instance_count=num_of_scheduled_jobs/request_per_instance/scheduled_job_scaling_factor
+and
+min_instance_count&lt;=desired_instances_count&lt;=max_instance_count
+</code></pre>
+
+<p>The <code>num_of_scheduled_jobs</code> is the number of notifications to be sent in that task. <code>Request_per_instance</code> gives a first indication on the number of jobs that can be handled by one app instance. We can use <code>scheduled_job_scaling_factor</code> to control how aggressively we want the scaling to be. Currently, this factor is set to 2 in Notify. Moreover, as the jobs are first delivered to the queues by delivery worker before these queues are consumed by senders and db workers. Hence, they are scaled up less agressively. </p>
+<h2 id="the-scaling-function">The Scaling function</h2>
+<p>The function <code>scale_paas_apps</code> uses the <code>desired_instance_count</code> factor calculated to scale up or down the number of instances for the app. Below is the Psuedocode for the autoscaler. </p>
+<pre><code>if desired_instance_count &gt; current_instance_count
+    scale up to desired_instance_count
+else if time since last scale up &gt; 5 mins
+    current_instance_count = current_instance_count - 1
+</code></pre>
+
+<p>The apps are instantly scaled up to the <code>desired_instance_count</code> if the current number of running instances is lower. However, on scaling down, No apps are scaled down if there has been a scaling up event in any app in the last 5 mins.  </p>
+<p>In a cooling down period, we only specify how many instances an app has. We do not specify which instance to kill. Any instance can be killed at scaling down. </p>
+<p>For Example,</p>
+<ul>
+<li>Initial instances: A, B, C</li>
+<li>Instances after scale up: A, B, C, D, E</li>
+<li>Possible state after scale down: B, C, E</li>
+</ul>
+<h2 id="min-and-max-instance-counts">Min and max instance counts</h2>
+<p>The <code>min_instance_count</code> and <code>max_instance_count</code> used to bound the <code>desired_instance_count</code> is defined differently in Notify's environment as below:</p>
+<p>| App | Queues | request per instance | msg per instance | default in prod | Preview | Staging/ Production |
+| ---- | ------ | --------- | ---- | --------- | ------- | ------- | ------|
+| notify-delivery-worker-sender | send-sms, send-email, send-tasks |  250 |    () | 4 | 1-2 | 4-20 |
+| notify-delivery-worker | notify, retry, process-job, notify-internal-tasks, retry-tasks, job-tasks, periodic-tasks | 250 | () | 2 | 1-1 | 2-5 |
+| notify-delivery-worker-database | db-sms, db-email, db-letter, database-tasks | 250 | () | 2 | 1-2 | 2-20 |
+| notify-delivery-worker-periodic | periodic, statistics, periodic-tasks, statistics-tasks | 250 | () | 2 | 1-1 | 2-5 |
+| notify-delivery-worker-research | research-mode, research-mode-tasks | 250 | () | 2 | 1-1 | 2-5 |
+| notify-delivery-worker-priority | priority, priority-tasks | 250 | () | 2 | 1-1 | 2-5 |
+| notify-api | notify-paas-proxy | () | 1500 | 4 | 1-2 | 2-20 |</p>
+<h2 id="non-scaled-apps">Non-scaled apps</h2>
+<p>The following apps are not scaled:</p>
+<ul>
+<li>notify-delivery-celery-beat (default: 2)</li>
+<li>notify-admin-failwhale (default: 1)</li>
+<li>notify-template-preview (default: 1)</li>
+<li>notify-admin (default: 2)</li>
+</ul>
+<h2 id="source-code">Source Code</h2>
+<p>The source code of our autoscaler can be found <a href="https://github.com/alphagov/notifications-paas-autoscaler/blob/master/main.py">here</a> in the Notify's <a href="https://github.com/alphagov/notifications-paas-autoscaler">notificaitos-paas-autoscaler</a> repository.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../Dbeaver/" class="btn btn-neutral" title="Dbeaver"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../Dbeaver/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>
