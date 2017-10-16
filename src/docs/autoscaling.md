@@ -10,13 +10,13 @@ These terms used in this article refer to:
 ## Metrics ##
 Notify's auto scaling uses these metrics:
 
-* **RequestCounts (for Inbound-apps)** <br>
+* **RequestCounts (for Request handlers)** <br>
 A metric returned by AWS Cloudwatch for the Elastic Load Balancers (ELB) to scale each of the ELB apps running on PaaS
 
-* **ApproximateNumberOfMessages (for Delivery-apps)** <br>
+* **ApproximateNumberOfMessages (for Delivery workers)** <br>
 A metric returned by AWS Cloudwatch for the SQS queues to scale each notification delivery and database apps on PaaS.
 
-* **Number of scheduled notifications (for scheduled-jobs)**<br>
+* **Number of scheduled notifications (for Scheduled jobs)**<br>
 A metric obtained from the database for csv files to be sent in the next 1 minutes, and is updated everytime when the autoscaler is scheduled run.
 
 The autoscaler is scheduled to run every 20 seconds using the python ```sched``` module. Autoscaling applies to each individual apps. 
@@ -87,15 +87,18 @@ For Example,
 ## Min and max instance counts ##
 The `min_instance_count` and `max_instance_count` used to bound the `desired_instance_count` is defined differently in Notify's environment as below:
 
-| App | Queues | req per instance  (Delivery & DB apps) | msg per instance (inbound apps) | default in prod. | Preview | Staging/ Production |
-| --- | ------ | ---------------- | --- | --------- | ------- | ------- | ----------|
-| notify-delivery-worker-sender | send-sms, send-email, send-tasks |  250 |    - | 4 | 1-2 | 4-20 |
-| notify-delivery-worker | notify, retry, process-job, notify-internal-tasks, retry-tasks, job-tasks, periodic-tasks | 250 | - | 2 | 1-1 | 2-5 |
-| notify-delivery-worker-database | db-sms, db-email, db-letter, database-tasks | 250 | - | 2 | 1-2 | 2-20 |
-| notify-delivery-worker-periodic | periodic, statistics, periodic-tasks, statistics-tasks | 250 | - | 2 | 1-1 | 2-5 |
-| notify-delivery-worker-research | research-mode, research-mode-tasks | 250 | - | 2 | 1-1 | 2-5 |
-| notify-delivery-worker-priority | priority, priority-tasks | 250 | - | 2 | 1-1 | 2-5 |
-| notify-api | notify-paas-proxy | - | 1500 | 4 | 1-2 | 2-20 |
+| App(delivery) | Queues | Msg per instance | Default in prod | Preview | Staging/ Prod |
+|----------|-----------|:----:|:---:|:---:|:---:|
+| notify-delivery-worker-sender | send-sms, send-email, send-tasks |  250 | 4 | 1-2 | 4-20 |
+| notify-delivery-worker | notify, retry, process-job, notify-internal-tasks, retry-tasks, job-tasks, periodic-tasks | 250 | 2 | 1-1 | 2-5 |
+| notify-delivery-worker-database | db-sms, db-email, db-letter, database-tasks | 250 | 2 | 1-2 | 2-20 |
+| notify-delivery-worker-periodic | periodic, statistics, periodic-tasks, statistics-tasks | 250 | 2 | 1-1 | 2-5 |
+| notify-delivery-worker-research | research-mode, research-mode-tasks | 250 | 2 | 1-1 | 2-5 |
+| notify-delivery-worker-priority | priority, priority-tasks | 250 | 2 | 1-1 | 2-5 |
+
+App (Inbound) | Queues | Req per instance | Default in prod | Preview | Staging/ Prod
+----------|---------------------|:----:|:---:|:---:|:---:
+notify-api | notify-paas-proxy | 1500 | 4 | 1-2 | 2-20
 
 ## Non-scaled apps ##
 
