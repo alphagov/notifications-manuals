@@ -29,8 +29,8 @@ A factor `desired_instances_count` is used to determine the desired number of in
 
 The definition of `min_instance_count` and `max_instance_count` can be found in the latter section. 
 
-### Queue consumers ###
-The autoscaler checks the total number of messages in the queues (ApproximateNumberOfMessages) of the app. One app can use multiple queues. 
+### Delivery workers ###
+The autoscaler checks the total number of messages in the queues (ApproximateNumberOfMessages) of the app and scaled accordingly. One app can use multiple queues. This scaling is applicable to database tasks, CSV job processor, notifications senders and various research and priority jobs. 
 
 For example, 
 ```notify-delivery-worker-sender``` is an app for delivering the notifications to the service providers, i.e. AWS SES and text messaging providers. The celery worker consumes job from two queues: ```send-sms-tasks``` and ```send-sms-tasks``` are being monitored. The number of instances is then calculated as:-
@@ -52,7 +52,7 @@ desired_instance_count = max(request_counts)/request_per_instance
 
 
 ### Scheduled jobs ##
-Notify uses a proactive schedule for scheduled tasks. Scheduled tasks are CSV files the users uploaded to be run at a given time. We already have the information of job size (number of notificaitons) and the scheduled time. The proactive scheduler scales up the number of instances before the jobs start.  
+Notify uses a proactive schedule for scheduled tasks. Scheduled tasks are CSV files the users uploaded to be run at a given time. We already have the information of job size (number of notificaitons) and the scheduled time. The proactive scheduler scales up the number of instances before the jobs start. This scaling applies to the same task as the Delivery workers above. 
 
 The desired number of instances for the particular app is calculated as follow:
 
