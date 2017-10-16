@@ -96,9 +96,9 @@ The `min_instance_count` and `max_instance_count` used to bound the `desired_ins
 | notify-delivery-worker-research | research-mode, research-mode-tasks | 250 | 2 | 1-1 | 2-5 |
 | notify-delivery-worker-priority | priority, priority-tasks | 250 | 2 | 1-1 | 2-5 |
 
-App (Inbound) | Queues | Req per instance | Default in prod | Preview | Staging/ Prod
-----------|---------------------|:----:|:---:|:---:|:---:
-notify-api | notify-paas-proxy | 1500 | 4 | 1-2 | 2-20
+| App (Inbound) | Queues | Req per instance | Default in prod | Preview | Staging/ Prod |
+|----------|-----------|:----:|:---:|:---:|:---:|
+|notify-api | notify-paas-proxy | 1500 | 4 | 1-2 | 2-20|
 
 ## Non-scaled apps ##
 
