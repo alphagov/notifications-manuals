@@ -5,6 +5,6 @@ pages:
     - Security: security.md
     - Incidents: incidents.md
     - Dbeaver: Dbeaver.md
-
+    - Autoscaling: autoscaling.md
 theme_dir: ./readthedocs
 site_dir: ../docs

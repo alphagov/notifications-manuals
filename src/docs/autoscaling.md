@@ -1,10 +1,10 @@
 # GOV.UK Notify AutoScaler
-Notify has bursty, periodic loads and traffic. During the night, the traffic stays low and most of the time, is consist of background scheduled testing jobs; and twe get more traffic during office hours. Once in a while, we would receive a task that is consisted of >20k notifications. This has motivated us to develop an autoscaler to response to these tasks and scale up and down Notify apps instances running on PaaS. 
+Notify has bursty, periodic loads and traffic. Outside of that, the traffic stays low and, most of the time, it consists of scheduled test jobs.; and twe get more traffic during office hours. Once in a while, we would receive a task that is consisted of >20k notifications. This has motivated us to develop an autoscaler to response to these tasks and scale up and down Notify apps instances running on PaaS. 
 
 These terms used in this article refer to:
 
-* a **task** is used to described when a user upload a csv file consist of a batch of notifications to be sent 
-* a **job** is a unit of notification, database query or a process to be run on the servers at a time
+* a **job** is used to describe when a user uploads a csv file that consists of a batch of notifications to be sent 
+* a **task** is a unit of notification, database query or a process to be run on the servers at a time
 * a **request** describes an 'http request' to retrieve or process information.  
  
 ## Metrics ##
@@ -27,18 +27,18 @@ A factor `desired_instances_count` is used to determine the desired number of in
  
 `min_instance_count<=desired_instances_count<=max_instance_count`
 
-The definition of `min_instance_count` and `max_instance_count` can be found in the latter section. 
+The definition of `min_instance_count` and `max_instance_count` can be found in the latter section. The desirable scaling instances are calculated differently for different types of apps as follow:
 
 ### Delivery workers ###
 The autoscaler checks the total number of messages in the queues (ApproximateNumberOfMessages) of the app and scaled accordingly. One app can use multiple queues. This scaling is applicable to database tasks, CSV job processor, notifications senders and various research and priority jobs. 
 
 For example, 
-```notify-delivery-worker-sender``` is an app for delivering the notifications to the service providers, i.e. AWS SES and text messaging providers. The celery worker consumes job from two queues: ```send-sms-tasks``` and ```send-sms-tasks``` are being monitored. The number of instances is then calculated as:-
+```notify-delivery-worker-sender``` is an app for delivering the notifications to the service providers, i.e. AWS SES and text messaging providers. The celery worker consumes tasks from two queues: ```send-sms-tasks``` and ```send-sms-tasks``` are being monitored. The number of instances is then calculated as:-
 
 ```
 desired_instances_count = total_message_count / request_per_instance
 ```
-where `total_message_count` is the sum of all the queues of this app and `request_per_instance` is a predefined estimated number of jobs an app instance can handle at one time.
+where `total_message_count` is the sum of all the queues of this app and `request_per_instance` is a predefined estimated number of tasks an app instance can handle at one time.
 
 ### Request handlers ##
 
@@ -52,7 +52,7 @@ desired_instance_count = max(request_counts)/request_per_instance
 
 
 ### Scheduled jobs ##
-Notify uses a proactive schedule for scheduled tasks. Scheduled tasks are CSV files the users uploaded to be run at a given time. We already have the information of job size (number of notificaitons) and the scheduled time. The proactive scheduler scales up the number of instances before the jobs start. This scaling applies to the same task as the Delivery workers above. 
+Notify uses a proactive schedule for scheduled tasks. Scheduled tasks are CSV files the users uploaded to be run at a given time. We already have the information of job size (number of notifications) and the scheduled time. The proactive scheduler scales up the number of instances before the jobs start. This scaling applies to the same apps as the Delivery workers above. 
 
 The desired number of instances for the particular app is calculated as follow:
 
@@ -62,7 +62,7 @@ and
 min_instance_count<=desired_instances_count<=max_instance_count
 ```
 
-The `num_of_scheduled_jobs` is the number of notifications to be sent in that task. `Request_per_instance` gives a first indication on the number of jobs that can be handled by one app instance. We can use `scheduled_job_scaling_factor ` to control how aggressively we want the scaling to be. Currently, this factor is set to 2 in Notify. Moreover, as the jobs are first delivered to the queues by delivery worker before these queues are consumed by senders and db workers. Hence, they are scaled up less agressively. 
+The `num_of_scheduled_jobs` is the number of notifications to be sent in that job. `Request_per_instance` gives a first indication on the number of tasks that can be handled by one app instance. We can use `scheduled_job_scaling_factor ` to control how aggressively we want the scaling to be. Currently, this factor is set to 2 in Notify. Moreover, as the tasks are first delivered to the queues by delivery worker before these queues are consumed by senders and database workers. Hence, they are scaled up less agressively. 
 
 ## The Scaling function ##
 The function `scale_paas_apps` uses the `desired_instance_count` factor calculated to scale up or down the number of instances for the app. Below is the Psuedocode for the autoscaler. 
