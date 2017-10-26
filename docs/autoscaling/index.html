@@ -132,26 +132,26 @@
             <div class="section">
               
                 <h1 id="govuk-notify-autoscaler">GOV.UK Notify AutoScaler</h1>
-<p>Notify has bursty, periodic loads and traffic. During the night, the traffic stays low and most of the time, is consist of background scheduled testing jobs; and twe get more traffic during office hours. Once in a while, we would receive a task that is consisted of &gt;20k notifications. This has motivated us to develop an autoscaler to response to these tasks and scale up and down Notify apps instances running on PaaS. </p>
+<p>Notify has bursty, periodic loads and traffic. Outside of that, the traffic stays low and, most of the time, it consists of scheduled test jobs.; and twe get more traffic during office hours. Once in a while, we would receive a task that is consisted of &gt;20k notifications. This has motivated us to develop an autoscaler to response to these tasks and scale up and down Notify apps instances running on PaaS. </p>
 <p>These terms used in this article refer to:</p>
 <ul>
-<li>a <strong>task</strong> is used to described when a user upload a csv file consist of a batch of notifications to be sent </li>
-<li>a <strong>job</strong> is a unit of notification, database query or a process to be run on the servers at a time</li>
+<li>a <strong>job</strong> is used to describe when a user uploads a csv file that consists of a batch of notifications to be sent </li>
+<li>a <strong>task</strong> is a unit of notification, database query or a process to be run on the servers at a time</li>
 <li>a <strong>request</strong> describes an 'http request' to retrieve or process information.  </li>
 </ul>
 <h2 id="metrics">Metrics</h2>
 <p>Notify's auto scaling uses these metrics:</p>
 <ul>
 <li>
-<p><strong>RequestCounts (for Inbound-apps)</strong> <br>
+<p><strong>RequestCounts (for Request handlers)</strong> <br>
 A metric returned by AWS Cloudwatch for the Elastic Load Balancers (ELB) to scale each of the ELB apps running on PaaS</p>
 </li>
 <li>
-<p><strong>ApproximateNumberOfMessages (for Delivery-apps)</strong> <br>
+<p><strong>ApproximateNumberOfMessages (for Delivery workers)</strong> <br>
 A metric returned by AWS Cloudwatch for the SQS queues to scale each notification delivery and database apps on PaaS.</p>
 </li>
 <li>
-<p><strong>Number of scheduled notifications (for scheduled-jobs)</strong><br>
+<p><strong>Number of scheduled notifications (for Scheduled jobs)</strong><br>
 A metric obtained from the database for csv files to be sent in the next 1 minutes, and is updated everytime when the autoscaler is scheduled run.</p>
 </li>
 </ul>
@@ -159,15 +159,15 @@ A metric obtained from the database for csv files to be sent in the next 1 minut
 <h2 id="scaling-instances">Scaling instances</h2>
 <p>A factor <code>desired_instances_count</code> is used to determine the desired number of instances to run for an App at an evaluated period. This factor is calculated differently for our three types of apps and is bounded by:</p>
 <p><code>min_instance_count&lt;=desired_instances_count&lt;=max_instance_count</code></p>
-<p>The definition of <code>min_instance_count</code> and <code>max_instance_count</code> can be found in the latter section. </p>
+<p>The definition of <code>min_instance_count</code> and <code>max_instance_count</code> can be found in the latter section. The desirable scaling instances are calculated differently for different types of apps as follow:</p>
 <h3 id="delivery-workers">Delivery workers</h3>
 <p>The autoscaler checks the total number of messages in the queues (ApproximateNumberOfMessages) of the app and scaled accordingly. One app can use multiple queues. This scaling is applicable to database tasks, CSV job processor, notifications senders and various research and priority jobs. </p>
 <p>For example, 
-<code>notify-delivery-worker-sender</code> is an app for delivering the notifications to the service providers, i.e. AWS SES and text messaging providers. The celery worker consumes job from two queues: <code>send-sms-tasks</code> and <code>send-sms-tasks</code> are being monitored. The number of instances is then calculated as:-</p>
+<code>notify-delivery-worker-sender</code> is an app for delivering the notifications to the service providers, i.e. AWS SES and text messaging providers. The celery worker consumes tasks from two queues: <code>send-sms-tasks</code> and <code>send-sms-tasks</code> are being monitored. The number of instances is then calculated as:-</p>
 <pre><code>desired_instances_count = total_message_count / request_per_instance
 </code></pre>
 
-<p>where <code>total_message_count</code> is the sum of all the queues of this app and <code>request_per_instance</code> is a predefined estimated number of jobs an app instance can handle at one time.</p>
+<p>where <code>total_message_count</code> is the sum of all the queues of this app and <code>request_per_instance</code> is a predefined estimated number of tasks an app instance can handle at one time.</p>
 <h3 id="request-handlers">Request handlers</h3>
 <p>The inbound apps are scaled based on last 5 <code>request_counts</code>, where <code>request_counts</code> is the total number of incoming requests in one minute.  </p>
 <pre><code>desired_instance_count = max(request_counts)/request_per_instance
@@ -175,14 +175,14 @@ A metric obtained from the database for csv files to be sent in the next 1 minut
 
 <p><code>request_per_instance</code> is a pre-defined scaler that indicates the number of requests that can be handled by one instance of app. </p>
 <h3 id="scheduled-jobs">Scheduled jobs</h3>
-<p>Notify uses a proactive schedule for scheduled tasks. Scheduled tasks are CSV files the users uploaded to be run at a given time. We already have the information of job size (number of notificaitons) and the scheduled time. The proactive scheduler scales up the number of instances before the jobs start. This scaling applies to the same task as the Delivery workers above. </p>
+<p>Notify uses a proactive schedule for scheduled tasks. Scheduled tasks are CSV files the users uploaded to be run at a given time. We already have the information of job size (number of notifications) and the scheduled time. The proactive scheduler scales up the number of instances before the jobs start. This scaling applies to the same apps as the Delivery workers above. </p>
 <p>The desired number of instances for the particular app is calculated as follow:</p>
 <pre><code>desired_instance_count=num_of_scheduled_jobs/request_per_instance/scheduled_job_scaling_factor
 and
 min_instance_count&lt;=desired_instances_count&lt;=max_instance_count
 </code></pre>
 
-<p>The <code>num_of_scheduled_jobs</code> is the number of notifications to be sent in that task. <code>Request_per_instance</code> gives a first indication on the number of jobs that can be handled by one app instance. We can use <code>scheduled_job_scaling_factor</code> to control how aggressively we want the scaling to be. Currently, this factor is set to 2 in Notify. Moreover, as the jobs are first delivered to the queues by delivery worker before these queues are consumed by senders and db workers. Hence, they are scaled up less agressively. </p>
+<p>The <code>num_of_scheduled_jobs</code> is the number of notifications to be sent in that job. <code>Request_per_instance</code> gives a first indication on the number of tasks that can be handled by one app instance. We can use <code>scheduled_job_scaling_factor</code> to control how aggressively we want the scaling to be. Currently, this factor is set to 2 in Notify. Moreover, as the tasks are first delivered to the queues by delivery worker before these queues are consumed by senders and database workers. Hence, they are scaled up less agressively. </p>
 <h2 id="the-scaling-function">The Scaling function</h2>
 <p>The function <code>scale_paas_apps</code> uses the <code>desired_instance_count</code> factor calculated to scale up or down the number of instances for the app. Below is the Psuedocode for the autoscaler. </p>
 <pre><code>if desired_instance_count &gt; current_instance_count
@@ -201,15 +201,90 @@ else if time since last scale up &gt; 5 mins
 </ul>
 <h2 id="min-and-max-instance-counts">Min and max instance counts</h2>
 <p>The <code>min_instance_count</code> and <code>max_instance_count</code> used to bound the <code>desired_instance_count</code> is defined differently in Notify's environment as below:</p>
-<p>| App | Queues | request per instance | msg per instance | default in prod | Preview | Staging/ Production |
-| ---- | ------ | --------- | ---- | --------- | ------- | ------- | ------|
-| notify-delivery-worker-sender | send-sms, send-email, send-tasks |  250 |    () | 4 | 1-2 | 4-20 |
-| notify-delivery-worker | notify, retry, process-job, notify-internal-tasks, retry-tasks, job-tasks, periodic-tasks | 250 | () | 2 | 1-1 | 2-5 |
-| notify-delivery-worker-database | db-sms, db-email, db-letter, database-tasks | 250 | () | 2 | 1-2 | 2-20 |
-| notify-delivery-worker-periodic | periodic, statistics, periodic-tasks, statistics-tasks | 250 | () | 2 | 1-1 | 2-5 |
-| notify-delivery-worker-research | research-mode, research-mode-tasks | 250 | () | 2 | 1-1 | 2-5 |
-| notify-delivery-worker-priority | priority, priority-tasks | 250 | () | 2 | 1-1 | 2-5 |
-| notify-api | notify-paas-proxy | () | 1500 | 4 | 1-2 | 2-20 |</p>
+<table>
+<thead>
+<tr>
+<th>App(delivery)</th>
+<th>Queues</th>
+<th align="center">Msg per instance</th>
+<th align="center">Default in prod</th>
+<th align="center">Preview</th>
+<th align="center">Staging/ Prod</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>notify-delivery-worker-sender</td>
+<td>send-sms, send-email, send-tasks</td>
+<td align="center">250</td>
+<td align="center">4</td>
+<td align="center">1-2</td>
+<td align="center">4-20</td>
+</tr>
+<tr>
+<td>notify-delivery-worker</td>
+<td>notify, retry, process-job, notify-internal-tasks, retry-tasks, job-tasks, periodic-tasks</td>
+<td align="center">250</td>
+<td align="center">2</td>
+<td align="center">1-1</td>
+<td align="center">2-5</td>
+</tr>
+<tr>
+<td>notify-delivery-worker-database</td>
+<td>db-sms, db-email, db-letter, database-tasks</td>
+<td align="center">250</td>
+<td align="center">2</td>
+<td align="center">1-2</td>
+<td align="center">2-20</td>
+</tr>
+<tr>
+<td>notify-delivery-worker-periodic</td>
+<td>periodic, statistics, periodic-tasks, statistics-tasks</td>
+<td align="center">250</td>
+<td align="center">2</td>
+<td align="center">1-1</td>
+<td align="center">2-5</td>
+</tr>
+<tr>
+<td>notify-delivery-worker-research</td>
+<td>research-mode, research-mode-tasks</td>
+<td align="center">250</td>
+<td align="center">2</td>
+<td align="center">1-1</td>
+<td align="center">2-5</td>
+</tr>
+<tr>
+<td>notify-delivery-worker-priority</td>
+<td>priority, priority-tasks</td>
+<td align="center">250</td>
+<td align="center">2</td>
+<td align="center">1-1</td>
+<td align="center">2-5</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>App (Inbound)</th>
+<th>Queues</th>
+<th align="center">Req per instance</th>
+<th align="center">Default in prod</th>
+<th align="center">Preview</th>
+<th align="center">Staging/ Prod</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>notify-api</td>
+<td>notify-paas-proxy</td>
+<td align="center">1500</td>
+<td align="center">4</td>
+<td align="center">1-2</td>
+<td align="center">2-20</td>
+</tr>
+</tbody>
+</table>
 <h2 id="non-scaled-apps">Non-scaled apps</h2>
 <p>The following apps are not scaled:</p>
 <ul>

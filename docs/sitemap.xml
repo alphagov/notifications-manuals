@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2017-10-12</lastmod>
+     <lastmod>2017-10-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,7 +12,7 @@
     
     <url>
      <loc>/systems/</loc>
-     <lastmod>2017-10-12</lastmod>
+     <lastmod>2017-10-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -20,7 +20,7 @@
     
     <url>
      <loc>/security/</loc>
-     <lastmod>2017-10-12</lastmod>
+     <lastmod>2017-10-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -28,7 +28,7 @@
     
     <url>
      <loc>/incidents/</loc>
-     <lastmod>2017-10-12</lastmod>
+     <lastmod>2017-10-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -36,7 +36,15 @@
     
     <url>
      <loc>/Dbeaver/</loc>
-     <lastmod>2017-10-12</lastmod>
+     <lastmod>2017-10-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/autoscaling/</loc>
+     <lastmod>2017-10-26</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
