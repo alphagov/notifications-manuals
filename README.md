@@ -1,6 +1,4 @@
-This documentation is generated using mkdocs. The output website files are stored in /docs directory and viewed in github page.
-The github page is
-```https://alphagov.github.io/notifications-manuals/```
+This documentation is generated using mkdocs. The output website files are stored in /docs directory and viewed hosted by Github Pages here: https://alphagov.github.io/notifications-manuals/
 
 ## mkdocs official documentations
 http://www.mkdocs.org/
